@@ -3,6 +3,8 @@ const dotenv = require('dotenv')
 dotenv.config()
 const cors = require('cors')
 const { StatusCode } = require('http-status-codes')
+const connect = require('./db/config')
+
 //port import
 const PORT = process.env.PORT
 //instance of express
@@ -18,22 +20,26 @@ app.use(cors())
 //index route
 app.get(`/`, async (req,res) => {
     try {
-        return res.status(StatusCode.ACCEPTED).json({ status:true, msg:`Welcome to fileupload api.`})
+        return res.status(StatusCodes.ACCEPTED).json({ status:true, msg:`Welcome to fileupload api.`})
     } catch (err) {
-        return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ status:false, msg: err})
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status:false, msg: err})
     }
 })
 
 //api route
+app.use(`/api/file`, require('./route/fileRoute'))
+
+//api route
 app.all(`**`, async (req,res) => {
     try {
-        return res.status(StatusCode.NOT_FOUND).json({ status:false, msg:`requested path not found`})
+        return res.status(StatusCodes.NOT_FOUND).json({ status:false, msg:`requested path not found`})
     } catch (err) {
-        return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ status:false, msg: err})
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status:false, msg: err})
     }
 })
 
 //server listener
-app.listen(PORT, () => {
+app.listen(PORT,() => {
+   connectDb()
     console.log(`server is running @ http://localhost:${PORT}`)
 })

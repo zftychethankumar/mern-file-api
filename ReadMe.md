@@ -9,4 +9,5 @@
 
  multer -> express middleware used to upload files
  express-fileupload ->
- npm i --save http-status-codes -> to handle
+ npm i --save http-status-codes -> to handle http status codes
+ cors -> cross-origin resource sharing
