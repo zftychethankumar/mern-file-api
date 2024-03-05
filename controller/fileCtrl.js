@@ -23,38 +23,48 @@ const uploadFile = async (req,res) => {
 const readAllFiles = async (req,res) => {
     try {
         let data = await File.find({})
+         //final response
         res.status(StatusCodes.ACCEPTED).json({ status: true, length: data.length, filename: data})
     } catch (err) {
+        //logical error
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false, msg: err})
     }
 }
 //read single file
 const readSingleFile = async (req,res) => {
     try {
+        //reading fileid from router parameters
         let id = req.params.id
+        //file is exists in db or not
         let extFile = await File.findById(id)
+        //if filenot exists -> throw err
         if(!extFile)
         return res.status(StatusCodes.NOT_FOUND).json({status:false, msg: `requested id not found`})
-
+         //final response
         res.status(StatusCodes.ACCEPTED).json({ status:true, file: extFile })
     } catch (err) {
+        //logical error
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false, msg: err})
     }
 }
 //delete file
 const deleteFile = async (req,res) => {
     try {
+        //reading fileid from router parameters
         let id = req.params.id
+        //file is exists in db or not
         let extFile = await File.findById(id)
-        if(!extFile)
+        //if filenot exists -> throw err
+         if(!extFile)
         return res.status(StatusCodes.NOT_FOUND).json({status:false, msg: `requested id not found`})
        
         fs.unlinkSync(extFile.path)/*delete file from location*/
-
+         //delete db contents
         await File.findByIdAndDelete(id)
-
-        res.status(StatusCodes.ACCEPTED).json({ status:true, msg: 'File deleted successfully'})
+         //final response
+       return res.status(StatusCodes.ACCEPTED).json({ status:true, msg: 'File deleted successfully'})
     } catch (err) {
+        //logical error
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false, msg: err})
     }
 }
