@@ -13,6 +13,7 @@ const app = express()
 
 //declare document folder  as static
 app.use(express.static('documents'))
+app.use(express.static('view'))
 
 //bodyparser middleware for incoming data
 app.use(express.urlencoded({ extended: true}))
@@ -21,10 +22,23 @@ app.use(express.json())
 //middle
 app.use(cors())
 
+//template engine settings
+app.set('view engine', 'ejs');
+app.set('views','./view');
+
 //index route
 app.get(`/`, async (req,res) => {
     try {
-        return res.status(StatusCodes.ACCEPTED).json({ status:true, msg:`Welcome to fileupload api.`})
+        return res.render('index.ejs')
+    } catch (err) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status:false, msg: err})
+    }
+})
+
+//upload page view controller
+app.get(`/upload`, async (req,res) => {
+    try {
+        return res.render('upload.ejs')
     } catch (err) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status:false, msg: err})
     }

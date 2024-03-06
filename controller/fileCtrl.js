@@ -24,7 +24,7 @@ const readAllFiles = async (req,res) => {
     try {
         let data = await File.find({})
          //final response
-        res.status(StatusCodes.ACCEPTED).json({ status: true, length: data.length, filename: data})
+        res.status(StatusCodes.ACCEPTED).json({ status: true, length: data.length, files: data})
     } catch (err) {
         //logical error
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false, msg: err})
