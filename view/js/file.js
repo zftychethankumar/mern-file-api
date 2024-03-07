@@ -4,8 +4,8 @@ var formData = new FormData();
 //file select on change of input
 document.getElementById("mFile").addEventListener("change", async (e) => {
     e.preventDefault()
-    console.log("file", e.target.files[0])
-    formData.append("mFile", e.target.files[0])
+    console.log("file", e.target.files)
+    formData.append("mFile", e.target.files)
 });
 
 //upload logic
